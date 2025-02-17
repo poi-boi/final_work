@@ -1,0 +1,166 @@
+//String
+
+pragma solidity ^0.5.0;
+
+
+contract SolidityTest {
+constructor() public{
+}
+function getResult() public view returns(string memory){
+uint a = 1;
+uint b = 2;
+uint result = a + b;
+return integerToString(result);
+}
+function integerToString(uint _i) internal pure
+returns (string memory) {
+
+
+if (_i == 0) {
+return "0";
+}
+uint j = _i;
+uint len;
+
+
+while (j != 0) {
+len++;
+j /= 10;
+}
+bytes memory bstr = new bytes(len);
+uint k = len - 1;
+
+
+while (_i != 0) {
+bstr[k--] = byte(uint8(48 + _i % 10));
+_i /= 10;
+}
+return string(bstr);
+}
+}
+-------------------------------
+// Array
+
+pragma solidity ^0.5.0;
+function
+// Creating a contract
+contract Types {
+
+
+// Declaring an array
+uint[6] data;
+uint x;
+
+
+// Defining function to
+// assign values to array
+function array_example() public returns (uint[6] memory)
+{
+
+
+data  = [uint(10), 20, 30, 40, 50, 60];
+}
+function result() public view returns(uint[6] memory){
+return data;
+}
+// Defining function to access
+// values from the array
+// from a specific index
+function array_element() public view returns (uint){
+uint x = data[2];
+return x;
+}
+}
+------------------------
+// Enumerate
+
+pragma solidity ^0.5.0;
+
+
+// Creating a contract
+contract Types {
+
+
+// Creating an enumerator
+enum week_days
+{
+Monday,
+Tuesday,
+Wednesday,
+Thursday,
+Friday,
+Saturday,
+Sunday
+}
+// Declaring variables of
+// type enumerator
+week_days week;
+
+
+week_days choice;
+
+
+// Setting a default value
+week_days constant default_value
+= week_days.Sunday;
+
+
+// Defining a function to
+// set value of choice
+function set_value() public {
+choice = week_days.Thursday;
+}
+// Defining a function to
+// return value of choice
+function get_choice(
+) public view returns (week_days) {
+return choice;
+}
+// Defining function to
+// return default value
+function getdefaultvalue(
+) public pure returns(week_days) {
+return default_value;
+}
+}
+
+---------------------------------
+// Structures
+
+pragma solidity ^0.5.0;
+
+
+contract test {
+struct Book {
+string title;
+string author;
+uint book_id;
+}
+Book book;
+
+
+function setBook() public {
+book = Book('Learn Java', 'TP', 1);
+}
+function getBookId() public view returns (uint) {
+return book.book_id;
+}
+}
+----------------------------
+// Mapping
+
+pragma solidity ^0.5.0;
+
+
+contract LedgerBalance {
+mapping(address => string)  name;
+
+
+function updateBalance() public returns(string memory){
+name[msg.sender] = "Mrunali";
+return name[msg.sender];
+}
+function printsender() public view returns(address) {
+return msg.sender;
+}
+}
