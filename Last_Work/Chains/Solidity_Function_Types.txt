@@ -1,0 +1,49 @@
+// Function Over loading
+
+pragma solidity ^0.5.0;
+
+
+contract Test {
+function getSum(uint a, uint b) public pure returns(uint){
+return a + b;
+}
+function getSum(uint a, uint b, uint c ) public pure returns(uint){
+return a + b + c;
+}
+function callSumWithTwoArguments() public pure returns(uint){
+return getSum(2,2);
+}
+function callSumWithThreeArguments() public pure returns(uint){
+return getSum(1,2,4);
+}
+
+
+}
+
+---------------------------------
+
+// Mathematical Function
+
+pragma solidity ^0.5.0;
+
+
+contract Test {
+function callAddMod() public pure returns(uint){
+return addmod(4, 5, 3);
+}
+function callMulMod() public pure returns(uint){
+return mulmod(4, 5, 3);
+}
+}
+
+----------------------------------
+
+// Cryptographic functions
+
+pragma solidity ^0.5.0;
+contract Test {
+function callKeccak256() public pure returns(bytes32 result){
+return keccak256("ABC");
+}
+}
+
