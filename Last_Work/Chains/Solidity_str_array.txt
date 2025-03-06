@@ -42,7 +42,7 @@ return string(bstr);
 // Array
 
 pragma solidity ^0.5.0;
-function
+
 // Creating a contract
 contract Types {
 
