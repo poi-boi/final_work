@@ -60,10 +60,6 @@ function f3() public pure returns(int){
     int z=80;
 return z;
 }
-
-
-
-
 }
 
 ----------------------------
