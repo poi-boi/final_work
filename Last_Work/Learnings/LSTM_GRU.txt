@@ -1,4 +1,4 @@
-#LSTM_GRU
+#LSTM_GRU - Pracatical 7
 #pip install yfinance
 
 # future prediction in same graph
