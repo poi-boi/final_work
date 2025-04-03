@@ -1,3 +1,58 @@
+## Condition Statement:
+
+// If statement:
+pragma solidity >=0.8.6 <0.9.0; 
+contract IfExample{
+uint x = 100;
+uint y = 50;
+function check() public view returns (bool) 
+{
+	if (x < y) 
+	{
+	return true;
+	} 
+}
+}
+
+
+// If – else Statement:
+
+pragma solidity ^0.5.0;
+contract Types {
+uint i = 10;
+bool even;
+function decision_making(
+) public payable returns(bool){
+if (i%2 == 0){
+even = true;
+}
+else{
+even = false;
+}
+return even;
+}
+}
+
+// If – else – If statement:
+
+pragma solidity ^0.5.0;
+contract Types {
+uint i = 12;
+string result;
+function decision_making (
+) public returns(string memory){
+if(i<10){
+result = "less than 10";
+}
+else if(i == 10){
+result = "equal to 10"; }
+else{
+result = "greater than 10"; }
+return result; } }
+
+
+
+
 // Declaring state variables
 uint i = 12;
 string result;
