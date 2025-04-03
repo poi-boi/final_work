@@ -38,6 +38,21 @@ _i /= 10;
 return string(bstr);
 }
 }
+
+-----------------------------
+// string (as per jour)
+pragma solidity ^0.4.23;
+contract Test {
+string  str;
+constructor(string str_in){
+str = str_in;
+}
+function str_out() public view returns(string memory){
+return str;
+}
+}
+
+
 -------------------------------
 // Array
 
