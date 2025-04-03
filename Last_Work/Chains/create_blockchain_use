@@ -1,1 +1,136 @@
+#Aim: Create your own blockchain and demonstrate its use.
+# following imports are required by PKI
+
+import hashlib
+import random
+import binascii
+import datetime
+import collections
+from Crypto.PublicKey import RSA
+from Crypto import Random
+from Crypto.Cipher import PKCS1_v1_5
+from collections import OrderedDict
+from Crypto.Hash import SHA256
+from Crypto.Signature import PKCS1_v1_5
+
+
+class Client:
+    def __init__(self):
+        random_gen = Random.new().read
+        self._private_key = RSA.generate(1024, random_gen)
+        self._public_key = self._private_key.publickey()
+        self._signer = PKCS1_v1_5.new(self._private_key)
+
+    @property
+    def identity(self):
+        return binascii.hexlify(self._public_key.exportKey(format='DER')).decode('ascii')
+
+
+class Transaction:
+    def __init__(self, sender, recipient, value):
+        self.sender = sender
+        self.recipient = recipient
+        self.value = value
+        self.time = datetime.datetime.now()
+
+    def to_dict(self):
+        identity = "Genesis" if self.sender == "Genesis" else self.sender.identity
+        return collections.OrderedDict({
+            'sender': identity,
+            'recipient': self.recipient,
+            'value': self.value,
+            'time': str(self.time)  # Convert datetime to string
+        })
+
+    def sign_transaction(self):
+        private_key = self.sender._private_key
+        signer = PKCS1_v1_5.new(private_key)
+        h = SHA256.new(str(self.to_dict()).encode('utf8'))
+        return binascii.hexlify(signer.sign(h)).decode('ascii')
+
+    @staticmethod
+    def display_transaction(transaction):
+        dict_tx = transaction.to_dict()
+        print("Sender: " + dict_tx['sender'])
+        print('-----')
+        print("Recipient: " + dict_tx['recipient'])
+        print('-----')
+        print("Value: " + str(dict_tx['value']))
+        print('-----')
+        print("Time: " + dict_tx['time'])
+        print('-----')
+
+
+class Block:
+    def __init__(self):
+        self.verified_transactions = []
+        self.previous_block_hash = ""
+        self.Nonce = ""
+
+    @staticmethod
+    def sha256(message):
+        return hashlib.sha256(message.encode('ascii')).hexdigest()
+
+    @staticmethod
+    def mine(message, difficulty=1):
+        assert difficulty >= 1
+        prefix = '1' * difficulty
+        for i in range(10000):  # Increased range to ensure mining success
+            digest = Block.sha256(str(message) + str(i))
+            if digest.startswith(prefix):
+                return i  # Return nonce value
+
+
+def dump_blockchain(blockchain):
+    print("Number of blocks in the chain: " + str(len(blockchain)))
+    for x, block_temp in enumerate(blockchain):
+        print("Block # " + str(x))
+        for transaction in block_temp.verified_transactions:
+            Transaction.display_transaction(transaction)
+            print('--------------')
+    print('=====================================')
+
+
+# Create clients, transactions, and blockchain
+A = Client()
+B = Client()
+C = Client()
+
+t0 = Transaction("Genesis", A.identity, 500.0)
+t1 = Transaction(A, B.identity, 40.0)
+t2 = Transaction(A, C.identity, 70.0)
+t3 = Transaction(B, C.identity, 700.0)
+
+# Blockchain
+TPCoins = []
+
+# Block 0 (Genesis Block)
+block0 = Block()
+block0.previous_block_hash = None
+block0.verified_transactions.append(t0)
+digest = Block.sha256(str(block0))
+last_block_hash = digest
+TPCoins.append(block0)
+
+# Block 1
+block1 = Block()
+block1.previous_block_hash = last_block_hash
+block1.verified_transactions.append(t1)
+block1.verified_transactions.append(t2)
+block1.Nonce = Block.mine(str(block1), 2)  # Mine block
+digest = Block.sha256(str(block1))
+last_block_hash = digest
+TPCoins.append(block1)
+
+# Block 2
+block2 = Block()
+block2.previous_block_hash = last_block_hash
+block2.verified_transactions.append(t3)
+block2.Nonce = Block.mine(str(block2), 2)  # Mine block
+digest = Block.sha256(str(block2))
+last_block_hash = digest
+TPCoins.append(block2)
+
+# Print blockchain details
+dump_blockchain(TPCoins)
 
