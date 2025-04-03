@@ -23,9 +23,7 @@ contract Test {
       );
       _;
    }
-   function disown() public onlyBy(owner) onlyAfter(creationTime + 6 weeks) {
-      delete owner;
-   }
+  
    modifier costs(uint _amount) {
       require(
          msg.value >= _amount,
@@ -35,12 +33,11 @@ contract Test {
       if (msg.value > _amount)
          msg.sender.transfer(msg.value - _amount);
    }
-   function forceOwnerChange(address _newOwner) public payable costs(200 ether) {
+   function forceOwnerChange(address _newOwner) public payable costs(50 ether) {
       owner = _newOwner;
       if (uint(owner) & 0 == 1) return;        
    }
 }
-
 --------------------------------
 #### Withdraw pattern
 
