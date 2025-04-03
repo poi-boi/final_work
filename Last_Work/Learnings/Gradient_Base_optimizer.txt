@@ -1,4 +1,4 @@
-# Gradient Based Optimization
+# Gradient Based Optimization - practical 2
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
@@ -9,7 +9,6 @@ x = tf.Variable(initial_value = 5.0, trainable = True, dtype = tf.float32)
 learning_rate = 0.1
 steps = []
 loss_values = []
-
 for step in range(20):
     with tf.GradientTape() as tape:
         loss = loss_function(x)
@@ -55,62 +54,4 @@ plt.title('Adam Optimization: Loss Reduction')
 plt.xlabel('Steps')
 plt.ylabel('Loss')
 plt.grid('True')
-plt.show()
-import tensorflow as tf
-from tensorflow.keras import layers, models
-import matplotlib.pyplot as plt
-
-(mnist_train, mnist_train_labels), (mnist_test, mnist_test_labels) = tf.keras.datasets.mnist.load_data()
-mnist_train = mnist_train/255.0
-mnist_test = mnist_test/255.0
-
-mnist_train = mnist_train[..., tf.newaxis]
-mnist_test = mnist_test[..., tf.newaxis]
-print(f"MNIST Train Shape: {mnist_train.shape}, MNIST Test Shape: {mnist_test.shape}")
-
-batch_size = 32
-train_dataset = tf.data.Dataset.from_tensor_slices((mnist_train, mnist_train_labels))
-train_dataset = train_dataset.shuffle(buffer_size=10000).batch(batch_size)
-
-test_dataset = tf.data.Dataset.from_tensor_slices((mnist_test, mnist_test_labels))
-test_dataset = test_dataset.batch(batch_size)
-
-def augment(image, label):
-    image = tf.image.random_flip_left_right(image)
-    image = tf.image.random_brightness(image, max_delta=0.1)
-    return image, label
-
-augmented_train_dataset = train_dataset.map(augment)
-model = models.Sequential([
-    layers.Input(shape=(28,28,1)),
-    layers.Conv2D(32, kernel_size=(3,3), activation='relu'),
-    layers.MaxPooling2D(pool_size=(2,2)),
-    layers.Conv2D(64, kernel_size=(3,3), activation='relu'),
-    layers.MaxPooling2D(pool_size=(2,2)),
-    layers.Flatten(),
-    layers.Dense(128, activation='relu'),
-    layers.Dense(10, activation='softmax')
-])
-
-model.compile(optimizer='adam',
-              loss='sparse_categorical_crossentropy',
-              metrics=['accuracy'])
-
-history = model.fit(train_dataset, epochs=10, validation_data=test_dataset)
-
-plt.figure(figsize=(12,4))
-plt.subplot(1,2,1)
-plt.plot(history.history['accuracy'], label=['Train Accuracy'])
-plt.plot(history.history['val_accuracy'], label=['Validation Accuracy'])
-plt.title('Model Accuracy')
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.legend()
-plt.subplot(1,2,2)
-plt.plot(history.history['loss'], label='Train Loss')
-plt.plot(history.history['val_loss'], label='Validation Loss')
-plt.title('Model Loss')
-plt.xlabel('Epoch')
-plt.ylabel('Loss')
-plt.legend()
 plt.show()
