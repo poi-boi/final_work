@@ -1,1 +1,11 @@
+#Implement the mining module of Bitcoin client. The mining module, or miner, should produce blocks that solve proof-of-work puzzle.
+
+#!pip install bitcoinlib
+
+from bitcoinlib.wallets import Wallet
+w = Wallet.create('Wallet1')
+key1 = w.get_key()
+print('Wallet Address:',key1.address)
+w.scan()
+print(w.info())
 
