@@ -1,3 +1,5 @@
+#Practical 9 - Build an autoencoder for the MNIST dataset to encode and decode digit images, reducing dimensionality while reconstructing the original data.
+
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
